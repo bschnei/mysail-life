@@ -53,6 +53,11 @@ REMOTE_TAG=gcr.io/$(PROJECT_ID)/$(LOCAL_TAG)
 CONTAINER_NAME=mysail-life-api
 DB_NAME=mysail-life
 
+sleep: check-env
+	gcloud compute instances stop mysail-life-vm-$(ENV) \
+		--project=$(PROJECT_ID) \
+		--zone=$(ZONE)
+
 ssh: check-env
 	gcloud compute ssh $(SSH_STRING) \
 		--project=$(PROJECT_ID) \
@@ -63,6 +68,11 @@ ssh-cmd: check-env
 		--project=$(PROJECT_ID) \
 		--zone=$(ZONE) \
 		--command="$(CMD)"
+
+wake: check-env
+	gcloud compute instances start mysail-life-vm-$(ENV) \
+		--project=$(PROJECT_ID) \
+		--zone=$(ZONE)
 
 build:
 	docker build -t $(LOCAL_TAG) .

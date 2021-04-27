@@ -21,6 +21,10 @@ define get-secret
 $(shell gcloud secrets versions access latest --secret=$(1) --project=$(PROJECT_ID))
 endef
 
+define get-ipv4
+$(shell curl -s http://whatismyip.akamai.com/)
+endef
+
 terraform-create-workspace: check-env
 	cd terraform && \
 		terraform workspace new $(ENV)
@@ -39,7 +43,9 @@ terraform-action: check-env
 		-var-file="./environments/$(ENV)/config.tfvars" \
 		-var="atlas_private_key=$(call get-secret,atlas_private_key)" \
 		-var="atlas_user_password=$(call get-secret,atlas_user_password_$(ENV))" \
-		-var="cloudflare_api_token=$(call get-secret,cloudflare_api_token)"
+		-var="namecheap_username=$(call get-secret,namecheap_username)" \
+		-var="namecheap_token=$(call get-secret,namecheap_token)" \
+		-var="namecheap_ip=$(call get-ipv4)"
 
 ###
 

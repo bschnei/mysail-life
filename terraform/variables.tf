@@ -25,8 +25,16 @@ variable "gcp_machine_type" {
   type = string
 }
 
-### CLOUDFLARE
-variable "cloudflare_api_token" {
+### NAMECHEAP
+variable "namecheap_username" {
+  type = string
+}
+
+variable "namecheap_token" {
+  type = string
+}
+
+variable "namecheap_ip" {
   type = string
 }
 

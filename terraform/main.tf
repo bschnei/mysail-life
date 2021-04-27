@@ -4,17 +4,17 @@ terraform {
         prefix = "/state/mysail-life"
     }
     required_providers {
-      cloudflare = {
-          source  = "cloudflare/cloudflare"
-          version = "~> 2.19.2"
-      }
       google = {
-          source  = "hashicorp/google"
-          version = "~> 3.63.0"
+        source  = "hashicorp/google"
+        version = "~> 3.65.0"
       }
       mongodbatlas = {
-          source  = "mongodb/mongodbatlas"
-          version = "~> 0.8.2"
+        source  = "mongodb/mongodbatlas"
+        version = "~> 0.8.2"
       }
+      namecheap = {
+        source  = "robgmills/namecheap"
+        version = "~> 1.7.0"
+        }
     }
 }

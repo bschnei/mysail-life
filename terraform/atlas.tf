@@ -13,7 +13,7 @@ resource "mongodbatlas_cluster" "mongo_cluster" {
   provider_region_name        = "CENTRAL_US"
   provider_instance_size_name = "M2"
   disk_size_gb                = 2
-  
+
   mongo_db_major_version       = "4.4"
   auto_scaling_disk_gb_enabled = false
 

@@ -39,8 +39,6 @@ terraform-action: check-env
 	@cd terraform && \
 		terraform workspace select $(ENV) && \
 		terraform $(TF_ACTION) \
-		-var-file="./environments/common.tfvars" \
-		-var-file="./environments/$(ENV)/config.tfvars" \
 		-var="atlas_private_key=$(call get-secret,atlas_private_key)" \
 		-var="atlas_user_password=$(call get-secret,atlas_user_password_$(ENV))" \
 		-var="namecheap_username=$(call get-secret,namecheap_username)" \

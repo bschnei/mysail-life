@@ -38,7 +38,7 @@ data "google_compute_image" "cos_image" {
 # COMPUTE ENGINE INSTANCE
 resource "google_compute_instance" "instance" {
   name         = "${var.app_name}-vm-${terraform.workspace}"
-  machine_type = var.gcp_machine_type
+  machine_type = "f1-micro"
   zone         = "us-central1-a"
 
   tags = google_compute_firewall.allow_http.target_tags

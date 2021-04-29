@@ -1,12 +1,16 @@
 provider "google" {
-  credentials = file("terraform-sa-key.json")
-  project     = var.app_name
+
+  # default project and region to apply to resources
+  project     = "mysail-life"
   region      = "us-central1"
+
+  credentials = file("terraform-sa-key.json")
+
 }
 
 # IP ADDRESS
 resource "google_compute_address" "ip_address" {
-  name = "${var.app_name}-ip-${terraform.workspace}"
+  name = "${var.app_name}-ip"
 }
 
 # NETWORK
@@ -14,9 +18,9 @@ data "google_compute_network" "default" {
   name = "default"
 }
 
-# FIREWALL RULE
+# FIREWALL RULES
 resource "google_compute_firewall" "allow_http" {
-  name    = "allow-http-${terraform.workspace}"
+  name    = "allow-http"
   network = data.google_compute_network.default.name
 
   allow {
@@ -26,29 +30,49 @@ resource "google_compute_firewall" "allow_http" {
 
   source_ranges = ["0.0.0.0/0"]
 
-  target_tags = ["allow-http-${terraform.workspace}"]
+  target_tags = ["allow-http"]
+}
+
+resource "google_compute_firewall" "allow_https" {
+  name    = "allow-https"
+  network = data.google_compute_network.default.name
+
+  allow {
+    protocol = "tcp"
+    ports    = ["443"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+
+  target_tags = ["allow-https"]
 }
 
 # OS IMAGE
-data "google_compute_image" "cos_image" {
-  family  = "cos-89-lts"
-  project = "cos-cloud"
+data "google_compute_image" "debian10_image" {
+  family  = "debian-10"
+  project = "debian-cloud"
 }
 
-# COMPUTE ENGINE INSTANCE
-resource "google_compute_instance" "instance" {
-  name         = "${var.app_name}-vm-${terraform.workspace}"
-  machine_type = "f1-micro"
-  zone         = "us-central1-a"
+# web server instance
+resource "google_compute_instance" "web_server" {
 
-  tags = google_compute_firewall.allow_http.target_tags
-
+  # required. let's go with the latest debian 10 image
   boot_disk {
     initialize_params {
-      image = data.google_compute_image.cos_image.self_link
+      image = data.google_compute_image.debian10_image.self_link
     }
   }
 
+  # f1-micro is the smallest/cheapest instance gcp offers
+  machine_type = "f1-micro"
+
+  # this is a static hostname within the VPC.
+  # changing it requires a complete rebuild of the instance!
+  name         = "web-server"
+
+  zone         = "us-central1-a"
+
+  # required. specifies the VPC
   network_interface {
     network = data.google_compute_network.default.name
 
@@ -56,6 +80,8 @@ resource "google_compute_instance" "instance" {
       nat_ip = google_compute_address.ip_address.address
     }
   }
+
+  tags = google_compute_firewall.allow_http.target_tags
 
   service_account {
     scopes = ["storage-ro"]

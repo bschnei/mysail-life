@@ -33,6 +33,6 @@ variable "namecheap_ip" {
   type = string
 }
 
-variable "domain" {
+variable "namecheap_domain" {
   type = string
 }

@@ -6,7 +6,7 @@ provider "mongodbatlas" {
 # cluster
 resource "mongodbatlas_cluster" "mongo_cluster" {
   project_id = var.atlas_project_id
-  name       = "${var.app_name}-${terraform.workspace}"
+  name       = "${var.app_name}"
 
   provider_name               = "TENANT"
   backing_provider_name       = "GCP"
@@ -21,7 +21,7 @@ resource "mongodbatlas_cluster" "mongo_cluster" {
 
 # db user
 resource "mongodbatlas_database_user" "mongo_user" {
-  username           = "${var.app_name}-user-${terraform.workspace}"
+  username           = "${var.app_name}-user"
   password           = var.atlas_user_password
   project_id         = var.atlas_project_id
   auth_database_name = "admin"

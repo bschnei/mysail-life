@@ -48,25 +48,24 @@ resource "google_compute_firewall" "allow_https" {
 }
 
 # OS IMAGE
-data "google_compute_image" "debian10_image" {
-  family  = "debian-10"
-  project = "debian-cloud"
+data "google_compute_image" "boot_image" {
+  family  = "ubuntu-minimal-2104"
+  project = "ubuntu-os-cloud"
 }
 
 # web server instance
 resource "google_compute_instance" "web_server" {
 
-  # required. let's go with the latest debian 10 image
   boot_disk {
     initialize_params {
-      image = data.google_compute_image.debian10_image.self_link
+      image = data.google_compute_image.boot_image.self_link
     }
   }
 
   # f1-micro is the smallest/cheapest instance gcp offers
   machine_type = "f1-micro"
 
-  # this is a static hostname within the VPC.
+  # this is a static hostname within the VPC
   # changing it requires a complete rebuild of the instance!
   name         = "web-server"
 

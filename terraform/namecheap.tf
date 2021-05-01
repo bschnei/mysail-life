@@ -10,6 +10,6 @@ provider "namecheap" {
 resource "namecheap_record" "ipv4_record" {
   name    = "@"
   domain  = var.namecheap_domain
-  address = google_compute_address.ip_address.address
+  address = google_compute_address.static_ipv4.address
   type    = "A"
 }

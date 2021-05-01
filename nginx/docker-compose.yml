@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+
+  nodejs:
+    build: ../
+    restart: unless-stopped
+    entrypoint: [ "npm", "start" ]
+    env_file: ../config/config.env
+    ports:
+      - '3000:3000'
+    networks:
+      - web
+
+  gateway:
+    image: ghcr.io/linuxserver/swag
+    container_name: swag
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: America/Los_Angeles
+      URL: mysail.life
+      VALIDATION: http
+    networks:
+      - web
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - swag-data:/config
+    depends_on:
+      - nodejs
+
+networks:
+  web:
+    driver: bridge
+
+volumes:
+  swag-data:
+    driver: local

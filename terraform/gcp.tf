@@ -9,7 +9,7 @@ provider "google" {
 }
 
 # IP ADDRESS
-resource "google_compute_address" "ip_address" {
+resource "google_compute_address" "static_ipv4" {
   name = "${var.app_name}-ip"
 }
 
@@ -19,32 +19,18 @@ data "google_compute_network" "default" {
 }
 
 # FIREWALL RULES
-resource "google_compute_firewall" "allow_http" {
-  name    = "allow-http"
+resource "google_compute_firewall" "allow_web" {
+  name    = "allow-web"
   network = data.google_compute_network.default.name
 
   allow {
     protocol = "tcp"
-    ports    = ["80"]
+    ports    = ["80", "443"]
   }
 
   source_ranges = ["0.0.0.0/0"]
 
-  target_tags = ["allow-http"]
-}
-
-resource "google_compute_firewall" "allow_https" {
-  name    = "allow-https"
-  network = data.google_compute_network.default.name
-
-  allow {
-    protocol = "tcp"
-    ports    = ["443"]
-  }
-
-  source_ranges = ["0.0.0.0/0"]
-
-  target_tags = ["allow-https"]
+  target_tags = ["allow-web"]
 }
 
 # OS IMAGE
@@ -76,11 +62,11 @@ resource "google_compute_instance" "web_server" {
     network = data.google_compute_network.default.name
 
     access_config {
-      nat_ip = google_compute_address.ip_address.address
+      nat_ip = google_compute_address.static_ipv4.address
     }
   }
 
-  tags = google_compute_firewall.allow_http.target_tags
+  tags = google_compute_firewall.allow_web.target_tags
 
   service_account {
     scopes = ["storage-ro"]

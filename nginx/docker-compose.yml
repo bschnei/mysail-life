@@ -13,7 +13,7 @@ services:
     networks:
       - web
     volumes:
-      - swag-data/etc/letsencrypt:/etc/letsencrypt
+      - swag-data:/etc/swag:ro
 
   gateway:
     image: ghcr.io/linuxserver/swag

@@ -97,10 +97,12 @@ app.listen(PORT, console.log(`Running in ${process.env.NODE_ENV} on port ${PORT}
 
 if (process.env.NODE_ENV === 'production') {
 
+  const HTTPS_PORT = PORT + 443
+
   https.createServer({
     key: fs.readFileSync('/etc/swag/etc/letsencrypt/live/mysail.life/privkey.pem'),
     cert: fs.readFileSync('/etc/swag/etc/letsencrypt/live/mysail.life/cert.pem')
 
-  }, app).listen(8443, console.log(`TLS server running in ${process.env.NODE_ENV} on port ${PORT}`))
+  }, app).listen(HTTPS_PORT, console.log(`TLS server started on port ${HTTPS_PORT}`))
 
 }

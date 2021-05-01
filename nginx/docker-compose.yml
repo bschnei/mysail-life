@@ -6,11 +6,14 @@ services:
     build: ../
     restart: unless-stopped
     entrypoint: [ "npm", "start" ]
+    container_name: nodejs
     env_file: ../config/config.env
     ports:
       - '3000:3000'
     networks:
       - web
+    volumes:
+      - swag-data/etc/letsencrypt:/etc/letsencrypt
 
   gateway:
     image: ghcr.io/linuxserver/swag

@@ -97,7 +97,7 @@ app.listen(PORT, console.log(`Running in ${process.env.NODE_ENV} on port ${PORT}
 
 if (process.env.NODE_ENV === 'production') {
 
-  const HTTPS_PORT = PORT + 443
+  const HTTPS_PORT = 3443
 
   https.createServer({
     key: fs.readFileSync('/etc/swag/etc/letsencrypt/live/mysail.life/privkey.pem'),

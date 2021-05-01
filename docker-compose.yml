@@ -28,7 +28,7 @@ services:
       - mongo-data:/data/db
 
 networks:
-  mysaillife-app:
+  mysail-life-app:
     driver: bridge
 
 volumes:

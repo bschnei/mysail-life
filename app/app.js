@@ -9,8 +9,6 @@ const passport = require('passport')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')
 const connectDB = require('./config/db')
-const https = require('https');
-const fs = require('fs');
 
 // Load config
 dotenv.config({ path: './config/config.env' })
@@ -94,15 +92,3 @@ app.use('/entries', require('./routes/entries'))
 const PORT = process.env.PORT || 3000
 
 app.listen(PORT, console.log(`Running in ${process.env.NODE_ENV} on port ${PORT}`))
-
-if (process.env.NODE_ENV === 'production') {
-
-  const HTTPS_PORT = 3443
-
-  https.createServer({
-    key: fs.readFileSync('/etc/swag/etc/letsencrypt/live/mysail.life/privkey.pem'),
-    cert: fs.readFileSync('/etc/swag/etc/letsencrypt/live/mysail.life/cert.pem')
-
-  }, app).listen(HTTPS_PORT, console.log(`TLS server started on port ${HTTPS_PORT}`))
-
-}

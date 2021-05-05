@@ -2,4 +2,4 @@ This started off by following along guides from two fantastic content creators. 
 
 https://www.traversymedia.com/
 
-https://sidpalas.com/
+https://devopsdirective.com/

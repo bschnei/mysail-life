@@ -1,7 +1,7 @@
 provider "google" {
 
   # default project and region to apply to resources
-  project     = "mysail-life"
+  project     = var.gcp_project_id
   region      = "us-central1"
 
   credentials = file("terraform-sa-key.json")
@@ -9,8 +9,8 @@ provider "google" {
 }
 
 # IP ADDRESS
-resource "google_compute_address" "static_ipv4" {
-  name = "${var.app_name}-ip"
+resource "google_compute_address" "ipv4" {
+  name = "${var.gcp_instance_name}-ip"
 }
 
 # NETWORK
@@ -53,7 +53,7 @@ resource "google_compute_instance" "web_server" {
 
   # this is a static hostname within the VPC
   # changing it requires a complete rebuild of the instance!
-  name         = "web-server"
+  name         = var.gcp_instance_name
 
   zone         = "us-central1-a"
 
@@ -62,7 +62,7 @@ resource "google_compute_instance" "web_server" {
     network = data.google_compute_network.default.name
 
     access_config {
-      nat_ip = google_compute_address.static_ipv4.address
+      nat_ip = google_compute_address.ipv4.address
     }
   }
 
@@ -73,7 +73,7 @@ resource "google_compute_instance" "web_server" {
   }
 
   metadata = {
-    ssh-keys = "ben:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDoYUV51feXIjctLJGZ5KCqDuxoNM4ryttu+L+IZiU36"
+    ssh-keys = "ben:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDoYUV51feXIjctLJGZ5KCqDuxoNM4ryttu+L+IZiU36 ben@desky"
     user-data = file("cloud-init.conf")
   }
 }

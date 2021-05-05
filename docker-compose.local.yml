@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  
+  nodejs:
+    build: ./app
+    entrypoint: [ "npm", "run", "dev" ]
+    env_file: ./app/config/config.env
+    environment:
+      MONGO_URI: "mongodb://mongo:27017/default"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./app:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - mongo
+  
+  mongo:
+    image: mongo:4.4
+    environment:
+      MONGO_INITDB_DATABASE: default
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
+    driver: local

@@ -1,36 +1,35 @@
-version: '3'
+version: "3"
 
 services:
-  
-  api-server:
-    build: ./
-    entrypoint: [ "npm", "run", "dev" ]
-    env_file: ./config/config.env
-    ports:
-      - '3000:3000'
-    networks:
-      - mysail-life-app
-    volumes:
-      - ./:/usr/src/app
-      - /usr/src/app/node_modules
-    depends_on:
-      - mongo
-  
-  mongo:
-    image: mongo:4.4
-    environment:
-      - MONGO_INITDB_DATABASE=mysail-life
-    ports:
-      - '27017:27017'
-    networks:
-      - mysail-life-app
-    volumes:
-      - mongo-data:/data/db
 
-networks:
-  mysail-life-app:
-    driver: bridge
+  nodejs:
+    image: gcr.io/mysail-life/app
+    container_name: nodejs
+    restart: unless-stopped
+    entrypoint: [ "npm", "start" ]
+    environment:
+      GOOGLE_CLIENT_ID: 1001255306684-j6fe3u0ppm5kebff6s34a3jmn5vv2i25.apps.googleusercontent.com
+      GOOGLE_CLIENT_SECRET: $GCS
+      MONGO_URI: $MURI
+
+  gateway:
+    image: gcr.io/mysail-life/swag
+    container_name: swag
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: America/Los_Angeles
+      URL: mysail.life
+      VALIDATION: http
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - swag-data:/config
 
 volumes:
-  mongo-data:
+  swag-data:
     driver: local

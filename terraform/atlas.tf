@@ -35,6 +35,6 @@ resource "mongodbatlas_database_user" "mongo_user" {
 # ip access list
 resource "mongodbatlas_project_ip_access_list" "mongo_ip_access_list" {
   project_id = var.atlas_project_id
-  ip_address = google_compute_address.static_ipv4.address
+  ip_address = google_compute_address.ipv4.address
   comment    = "GCP External IPv4"
 }

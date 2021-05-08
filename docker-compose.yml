@@ -8,9 +8,9 @@ services:
     restart: unless-stopped
     entrypoint: [ "npm", "start" ]
     environment:
-      GOOGLE_CLIENT_ID: 1001255306684-j6fe3u0ppm5kebff6s34a3jmn5vv2i25.apps.googleusercontent.com
-      GOOGLE_CLIENT_SECRET: $GCS
-      MONGO_URI: $MURI
+      GOOGLE_CLIENT_ID:
+      GOOGLE_CLIENT_SECRET:
+      MONGO_URI:
 
   gateway:
     image: gcr.io/mysail-life/swag
@@ -21,7 +21,7 @@ services:
     environment:
       PUID: 1000
       PGID: 1000
-      TZ: America/Los_Angeles
+      TZ: UTC
       URL: mysail.life
       VALIDATION: http
     ports:

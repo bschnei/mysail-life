@@ -86,7 +86,7 @@ deploy:
 	gcloud compute scp docker-compose.yml $(GCP_INSTANCE_NAME):~ \
 		--project=$(GCP_PROJECT_ID) \
 		--zone=$(GCP_ZONE)
-	$(MAKE) ssh-cmd CMD='gcloud auth configure-docker'
+	$(MAKE) ssh-cmd CMD='gcloud --quiet auth configure-docker'
 	$(MAKE) ssh-cmd CMD='docker-compose pull'
 	@$(MAKE) ssh-cmd CMD='\
 		GOOGLE_CLIENT_ID=$(OAUTH_CLIENT_ID) \

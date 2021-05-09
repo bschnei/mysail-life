@@ -73,7 +73,6 @@ resource "google_compute_instance" "web_server" {
   }
 
   metadata = {
-    ssh-keys = "ben:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDoYUV51feXIjctLJGZ5KCqDuxoNM4ryttu+L+IZiU36 ben@desky"
     user-data = file("cloud-init.conf")
   }
 }

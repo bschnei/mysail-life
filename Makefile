@@ -88,7 +88,7 @@ deploy:
 		--zone=$(GCP_ZONE)
 	$(MAKE) ssh-cmd CMD='gcloud auth configure-docker'
 	$(MAKE) ssh-cmd CMD='docker-compose pull'
-	$(MAKE) ssh-cmd CMD='\
+	@$(MAKE) ssh-cmd CMD='\
 		GOOGLE_CLIENT_ID=$(OAUTH_CLIENT_ID) \
 		GOOGLE_CLIENT_SECRET=$(call get-secret,google_oauth_client_secret) \
 		MONGO_URI=mongodb+srv://$(DB_USER):$(call get-secret,atlas_user_password)@mysail-life.54zcx.mongodb.net/$(DB_NAME)?retryWrites=true\&w=majority \

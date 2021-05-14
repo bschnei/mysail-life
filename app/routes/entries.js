@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const { ensureAuth } = require('../middleware/auth')
 
-const Story = require('../models/Story')
+const Entry = require('../models/Entry')
 
 // @desc    Show add page
 // @route   GET /entries/add
@@ -15,7 +15,7 @@ router.get('/add', ensureAuth, (req, res) => {
 router.post('/', ensureAuth, async (req, res) => {
     try {
         req.body.user = req.user.id
-        await Story.create(req.body)
+        await Entry.create(req.body)
         res.redirect('/dashboard')
     } catch (err) {
         console.error(err)
@@ -27,7 +27,7 @@ router.post('/', ensureAuth, async (req, res) => {
 // @route   GET /entries
 router.get('/', ensureAuth, async (req, res) => {
     try {
-        const entries = await Story.find({ status: 'public' })
+        const entries = await Entry.find({ status: 'public' })
             .populate('user')
             .sort({ createdAt: 'desc' })
             .lean()
@@ -43,7 +43,7 @@ router.get('/', ensureAuth, async (req, res) => {
 // @route   GET /entries/:id
 router.get('/:id', ensureAuth, async (req, res) => {
     try {
-        let entry = await Story.findById(req.params.id)
+        let entry = await Entry.findById(req.params.id)
             .populate('user')
             .lean()
         
@@ -68,7 +68,7 @@ router.get('/:id', ensureAuth, async (req, res) => {
 // @route   GET /entries/edit/:id
 router.get('/edit/:id', ensureAuth, async (req, res) => {
     try {
-        const entry = await Story.findOne({
+        const entry = await Entry.findOne({
             _id: req.params.id
         }).lean()
 
@@ -92,7 +92,7 @@ router.get('/edit/:id', ensureAuth, async (req, res) => {
 router.put('/:id', ensureAuth, async (req, res) => {
     try {
 
-        let entry = await Story.findById(req.params.id).lean()
+        let entry = await Entry.findById(req.params.id).lean()
 
         if (!entry) {
             return res.render('error/404')
@@ -101,7 +101,7 @@ router.put('/:id', ensureAuth, async (req, res) => {
         if (entry.user != req.user.id) {
             res.redirect('/entries')
         } else {
-            entry = await Story.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true, runValidators: true })
+            entry = await Entry.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true, runValidators: true })
             res.redirect('/dashboard')
         }
     } catch (err) {
@@ -114,7 +114,7 @@ router.put('/:id', ensureAuth, async (req, res) => {
 // @route   DELETE /entries/:id
 router.delete('/:id', ensureAuth, async (req, res) => {
     try {
-        let entry = await Story.remove({ _id: req.params.id })
+        let entry = await Entry.remove({ _id: req.params.id })
 
         if (!entry) {
             return res.render('error/404')
@@ -123,7 +123,7 @@ router.delete('/:id', ensureAuth, async (req, res) => {
         if (entry.user != req.user.id) {
             res.redirect('/entries')
         } else {
-            await Story.remove({ _id: req.params.id })
+            await Entry.remove({ _id: req.params.id })
             res.redirect('/dashboard')
         }
 
@@ -138,7 +138,7 @@ router.delete('/:id', ensureAuth, async (req, res) => {
 // @route   GET /entries/user/:userId
 router.get('/user/:userId', ensureAuth, async (req, res) => {
     try {
-        const entries = await Story.find({ user: req.params.userId, status: 'public' })
+        const entries = await Entry.find({ user: req.params.userId, status: 'public' })
             .populate('user')
             .lean()
         

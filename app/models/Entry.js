@@ -1,15 +1,15 @@
 const mongoose = require('mongoose')
 
-const StorySchema = new mongoose.Schema({
-    title: {
+const EntrySchema = new mongoose.Schema({
+    date: {
+        type: Date,
+        required: true
+    },
+    notes: {
         type: String,
         required: true
     },
-    body: {
-        type: String,
-        required: true
-    },
-    status: {
+    visibility: {
         type: String,
         default: 'private',
         enum: ['public', 'private']
@@ -24,4 +24,4 @@ const StorySchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('Story', StorySchema)
+module.exports = mongoose.model('Entry', EntrySchema)

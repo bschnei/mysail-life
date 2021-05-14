@@ -1,8 +1,9 @@
-const moment = require('moment')
+const {format} = require('date-fns')
+
 
 module.exports = {
-    formatDate: function (date, format) {
-        return moment(date).format(format)
+    formatDate: function (date, fmt) {
+        return format(date, fmt)
     },
     truncate: function (str, len) {
         if (str.length > len && str.length > 0) {

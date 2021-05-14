@@ -31,4 +31,16 @@
             <a href="/dashboard" class="btn orange">Cancel</a>
         </div>
     </form>
+    <script>
+        // set the default date in the datepicker to today
+        document.addEventListener('DOMContentLoaded', function() {
+            let options = {
+                defaultDate: new Date(),
+                setDefaultDate: true
+            };
+            let elems = document.querySelector('#date');
+            let instance = M.Datepicker.init(elems, options);
+            instance.setDate(new Date());
+        });
+    </script>
 </div>

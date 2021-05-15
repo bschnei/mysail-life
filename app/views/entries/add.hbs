@@ -35,13 +35,14 @@
     <script>
         // set the default date in the datepicker to today
         document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
             let options = {
-                defaultDate: new Date(),
+                defaultDate: today,
                 setDefaultDate: true
             };
             let elems = document.querySelector('#date');
             let instance = M.Datepicker.init(elems, options);
-            instance.setDate(new Date());
+            instance.setDate(today);
         });
     </script>
 </div>

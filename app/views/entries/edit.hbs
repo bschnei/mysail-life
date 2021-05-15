@@ -2,29 +2,37 @@
 <div class="row">
     <form action="/entries/{{entry._id}}" method="POST" class="col s12">
         <input type="hidden" name="_method" value="PUT">
+
         <div class="row">
             <div class="input-field">
-                <input type="text" id="title" name="title" value="{{entry.title}}">
-                <label for="title">Title</label>
+                <input type="text" id="date" name="date" class="datepicker">
+                <label for="date">Date</label>
             </div>
         </div>
 
         <div class="row">
             <div class="input-field">
-                <select id="status" name="status">
-                    {{#select entry.status}}
+                <textarea id="dateval" class="materialize-textarea">{{entry.date}}</textarea>
+                <label for="dateval">Saved Date Value</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field">
+                <textarea id="notes" class="materialize-textarea">{{entry.notes}}</textarea>
+                <label for="notes">Notes</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field">
+                <select id="visibility" name="visibility">
+                    {{#select entry.visibility}}
                     <option value="private" selected>Private</option>
                     <option value="public">Public</option>
                     {{/select}}
                 </select>
-                <label for="status">Status</label>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="input-field">
-                <textarea id="body" class="materialize-textarea">{{entry.body}}</textarea>
-                <label for="body">Notes</label>
+                <label for="visibility">Visibility</label>
             </div>
         </div>
 
@@ -33,4 +41,19 @@
             <a href="/dashboard" class="btn orange">Cancel</a>
         </div>
     </form>
+
+    <script>
+        // set the value in the datepicker
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateValue = new Date({{entry.date}};
+            let options = {
+                defaultDate: dateValue,
+                setDefaultDate: true
+            };
+            let elems = document.querySelector('#date');
+            let instance = M.Datepicker.init(elems, options);
+            instance.setDate(dateValue);
+        });
+    </script>
+
 </div>

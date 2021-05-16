@@ -5,8 +5,8 @@
         </h3>
         <div class="card Entry">
             <div class="card-content">
-                <span class="card-title">{{formatDate date 'MMMM Do YYYY, h:mm:ss a'}}</span>
-                {{{entry.body}}}
+                <span class="card-title">{{formatDate entry.date 'PPP'}}</span>
+                {{{entry.notes}}}
             </div>
         </div>
     </div>

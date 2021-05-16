@@ -4,7 +4,7 @@
         <thead>
             <tr>
                 <th>Date</th>
-                <th>Created At</th>
+                <th>Notes</th>
                 <th>Visibility</th>
                 <th></th>
             </tr>
@@ -13,7 +13,7 @@
             {{#each entries}}
                 <tr>
                     <td><a href="/entries/{{_id}}">{{formatDate date 'PPP'}}</a></td>
-                    <td>{{formatDate createdAt 'PPPpp'}}</td>
+                    <td>{{truncate notes 150}}</td>
                     <td><span class="dash-status">{{visibility}}</span></td>
                     <td>
                         <a href="/entries/edit/{{_id}}" class="btn btn-float"><i class="fas fa-edit"></i></a>

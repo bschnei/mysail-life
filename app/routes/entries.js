@@ -27,7 +27,7 @@ router.post('/', ensureAuth, async (req, res) => {
 // @route   GET /entries
 router.get('/', ensureAuth, async (req, res) => {
     try {
-        const entries = await Entry.find({ status: 'public' })
+        const entries = await Entry.find({ visibility: 'public' })
             .populate('user')
             .sort({ createdAt: 'desc' })
             .lean()
@@ -51,10 +51,8 @@ router.get('/:id', ensureAuth, async (req, res) => {
             return res.render('error/404')
         }
 
-        if (entry.user._id != req.user.id && entry.status == 'private') {
+        if (entry.user._id != req.user.id && entry.visibility == 'private') {
             res.render('error/404')
-          } else {
-            res.render('entries/show', { entry })
         }
 
         res.render('entries/show', { entry })
@@ -138,7 +136,7 @@ router.delete('/:id', ensureAuth, async (req, res) => {
 // @route   GET /entries/user/:userId
 router.get('/user/:userId', ensureAuth, async (req, res) => {
     try {
-        const entries = await Entry.find({ user: req.params.userId, status: 'public' })
+        const entries = await Entry.find({ user: req.params.userId, visibility: 'public' })
             .populate('user')
             .lean()
         

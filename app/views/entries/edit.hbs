@@ -12,13 +12,6 @@
 
         <div class="row">
             <div class="input-field">
-                <textarea id="dateval" class="materialize-textarea">{{entry.date}}</textarea>
-                <label for="dateval">Saved Date Value</label>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="input-field">
                 <textarea id="notes" class="materialize-textarea">{{entry.notes}}</textarea>
                 <label for="notes">Notes</label>
             </div>
@@ -45,7 +38,7 @@
     <script>
         // set the value in the datepicker
         document.addEventListener('DOMContentLoaded', function() {
-            const dateValue = new Date({{entry.date}};
+            const dateValue = new Date({{formatDate entry.date 'yyyy'}},{{formatDate entry.date 'M'}} - 1,{{formatDate entry.date 'd'}});
             let options = {
                 defaultDate: dateValue,
                 setDefaultDate: true

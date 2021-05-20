@@ -112,7 +112,7 @@ router.put('/:id', ensureAuth, async (req, res) => {
 // @route   DELETE /entries/:id
 router.delete('/:id', ensureAuth, async (req, res) => {
     try {
-        let entry = await Entry.remove({ _id: req.params.id })
+        let entry = await Entry.findById(req.params.id).lean()
 
         if (!entry) {
             return res.render('error/404')

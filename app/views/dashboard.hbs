@@ -1,5 +1,6 @@
-<h3>{{name}}'s Journal</h3>
+<h4>{{name}}'s Journal</h4>
 {{#if entries}}
+    <p>Total Number of Entries: {{entries.length}}</p>
     <table class="striped">
         <thead>
             <tr>
@@ -27,5 +28,5 @@
         </tbody>
     </table>
 {{else}}
-<p>Your journal contains all of your entries. <a href="/entries/add">Add your first entry!</a></p>
+<p>Your journal is where you can view and modify all of your entries. <a href="/entries/add">Add your first entry!</a></p>
 {{/if}}
